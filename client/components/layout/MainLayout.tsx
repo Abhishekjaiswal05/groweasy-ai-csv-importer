@@ -21,8 +21,12 @@ export default function MainLayout({
         <Navbar />
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto bg-slate-950 p-8">
-          {children}
+        <main className="flex-1 bg-slate-950 min-h-screen overflow-y-auto">
+
+          <div className="mx-auto max-w-7xl px-8 py-10">
+            {children}
+          </div>
+          
         </main>
 
       </div>

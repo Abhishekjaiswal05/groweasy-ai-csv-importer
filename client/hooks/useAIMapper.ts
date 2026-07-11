@@ -1,35 +1,54 @@
 "use client";
 
 import { useState } from "react";
-import { mapHeaders } from "@/services/ai.service";
-import type { MappingResult } from "@/services/ai.service";
+import { mapHeaders, MappingResult } from "@/services/ai.service";
 
 export default function useAIMapper() {
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-  const [mappings, setMappings] = useState<MappingResult[]>([]);
+    const [mappings, setMappings] = useState<MappingResult[]>([]);
 
-  const [error, setError] = useState("");
+    const [error, setError] = useState("");
 
-  async function detectFields(headers: string[]) {
-    try {
-      setLoading(true);
-      setError("");
+    async function detectFields(headers: string[]) {
+        try {
+            setLoading(true);
+            setError("");
 
-      const result = await mapHeaders(headers);
+            const result = await mapHeaders(headers);
 
-      setMappings(result);
-    } catch {
-      setError("Unable to detect fields.");
-    } finally {
-      setLoading(false);
+            setMappings(result);
+
+        } catch (err) {
+            console.error(err);
+
+            setError("Unable to generate AI mapping.");
+        } finally {
+            setLoading(false);
+        }
     }
-  }
 
-  return {
-    loading,
-    mappings,
-    error,
-    detectFields,
-  };
+    function updateMapping(
+        originalColumn: string,
+        mappedField: string
+    ) {
+        setMappings((prev) =>
+            prev.map((mapping) =>
+                mapping.originalColumn === originalColumn
+                    ? {
+                        ...mapping,
+                        mappedField,
+                    }
+                    : mapping
+            )
+        );
+    }
+
+    return {
+        mappings,
+        loading,
+        error,
+        detectFields,
+        updateMapping,
+    };
 }

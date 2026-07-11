@@ -9,40 +9,75 @@ interface PreviewTableProps {
 export default function PreviewTable({
   csvData,
 }: PreviewTableProps) {
-
+  // Empty State
   if (!csvData) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-700 p-12 text-center">
-        <h2 className="text-xl font-semibold text-white">
+      <div className="rounded-3xl border border-dashed border-slate-700 bg-slate-900 p-16 text-center">
+        <h2 className="text-2xl font-bold text-white">
           CSV Preview
         </h2>
 
         <p className="mt-3 text-slate-400">
+          Preview your uploaded CSV before importing.
+        </p>
+
+        <p className="mx-auto mt-6 max-w-md text-slate-500">
           Upload a CSV file to preview its contents.
         </p>
       </div>
     );
   }
 
+  const { rows, headers } = csvData;
+
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+    <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 shadow-xl">
 
-      <h2 className="mb-6 text-2xl font-bold text-white">
-        CSV Preview
-      </h2>
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-slate-800 p-6">
 
-      <div className="overflow-x-auto">
+        <div>
+          <h2 className="text-2xl font-bold text-white">
+            CSV Preview
+          </h2>
 
-        <table className="min-w-full border-collapse">
+          <p className="mt-2 text-sm text-slate-400">
+            Preview your uploaded CSV before importing.
+          </p>
+        </div>
 
-          <thead>
+        <div className="rounded-xl bg-indigo-500/10 px-4 py-2">
+          <p className="text-sm font-medium text-indigo-400">
+            {rows.length} Rows • {headers.length} Columns
+          </p>
+        </div>
+
+      </div>
+
+      {/* Table */}
+      <div className="max-h-[450px] overflow-auto">
+
+        <table className="min-w-full">
+
+          <thead className="sticky top-0 bg-slate-950 z-10">
 
             <tr>
 
-              {csvData.headers.map((header) => (
+              {headers.map((header) => (
                 <th
                   key={header}
-                  className="border-b border-slate-700 px-4 py-3 text-left text-sm font-semibold text-slate-300"
+                  className="
+                    border-b
+                    border-slate-800
+                    px-6
+                    py-4
+                    text-left
+                    text-xs
+                    font-semibold
+                    uppercase
+                    tracking-wider
+                    text-slate-400
+                  "
                 >
                   {header}
                 </th>
@@ -54,20 +89,31 @@ export default function PreviewTable({
 
           <tbody>
 
-            {csvData.rows.map((row, index) => (
+            {rows.map((row, index) => (
 
               <tr
                 key={index}
-                className="border-b border-slate-800 hover:bg-slate-800"
+                className="
+                  border-b
+                  border-slate-800
+                  transition-colors
+                  hover:bg-slate-800/60
+                "
               >
 
-                {csvData.headers.map((header) => (
+                {headers.map((header) => (
 
                   <td
                     key={header}
-                    className="px-4 py-3 text-sm text-slate-300"
+                    className="
+                      whitespace-nowrap
+                      px-6
+                      py-4
+                      text-sm
+                      text-slate-300
+                    "
                   >
-                    {row[header]}
+                    {row[header] || "-"}
                   </td>
 
                 ))}

@@ -2,14 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
-
-export interface MappingRequest {
-  headers: string[];
-}
 
 export interface MappingResult {
   originalColumn: string;
@@ -17,12 +10,14 @@ export interface MappingResult {
   confidence: number;
 }
 
-export async function mapHeaders(
-  headers: string[]
-): Promise<MappingResult[]> {
-  const response = await api.post("/ai/map-fields", {
+export async function mapHeaders(headers: string[]) {
+  const response = await api.post("/api/ai/map-fields", {
     headers,
   });
 
-  return response.data.mappings;
+  if (!response.data.success) {
+    throw new Error("AI Mapping Failed");
+  }
+
+  return response.data.mappings as MappingResult[];
 }

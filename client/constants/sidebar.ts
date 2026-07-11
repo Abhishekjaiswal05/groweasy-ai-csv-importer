@@ -2,7 +2,6 @@ import {
   LayoutDashboard,
   Upload,
   History,
-  Settings,
   Folder,
 } from "lucide-react";
 
@@ -10,12 +9,7 @@ export const sidebarItems = [
   {
     title: "Workspace",
     href: "/",
-    icon: LayoutDashboard,          
-  },
-  {
-    title: "Import CSV",
-    href: "/import",
-    icon: Upload,
+    icon: LayoutDashboard,
   },
   {
     title: "History",
@@ -23,9 +17,9 @@ export const sidebarItems = [
     icon: History,
   },
   {
-    title: "Settings",
-    href: "/settings",
-    icon: Settings,
+    title: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
   },
 ];
 
